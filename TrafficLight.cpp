@@ -20,6 +20,7 @@ int stepValue;
 int numSteps;
 int actualValue;
 bool TraffickLightFlags[3] = { false, true, false };
+bool lastValuePrinted { false };
 
 
 
@@ -34,10 +35,15 @@ int main()
 void AskValuesTrafficLight()
 // ----------------------------------------
 {
-	finalValue = 5020;
-	initialValue = 0;
-	stepValue = 20;
-	numSteps = 10;
+	cout << "Write  Initial value: \n";
+	cin >> initialValue;
+	cout << "Write  Final value: \n";
+	cin >> finalValue;
+	cout << "Write  Step value: \n";
+	cin >> stepValue;
+	cout << "Write  number of steps per thread: \n";
+	cin >> numSteps;
+	cout << "-------------------------- \n";
 	actualValue = initialValue;
 }
 
@@ -63,15 +69,20 @@ void trafficLightCount(string name)
 	{
 		ControlTrafficLightFlags(name);
 		int stepFinalValue = actualValue + (numSteps * stepValue);
-		if (stepFinalValue > finalValue)
-		{
-			stepFinalValue = finalValue;
-		}
-		for (; actualValue < stepFinalValue; actualValue = actualValue + stepValue)
+		if (stepFinalValue > finalValue) stepFinalValue = finalValue;
+
+		for (; actualValue <= stepFinalValue; actualValue = actualValue + stepValue)
 		{
 			cout << actualValue << " name: " << name << "\n";
 		}
-		cout << "-----change----- \n";
+		if ( finalValue < actualValue )
+		{
+			if (not lastValuePrinted and actualValue < (finalValue + stepValue)) {
+				cout << finalValue << " name: " << name << "\n";
+				lastValuePrinted = true;
+			}
+		}
+		cout << "---------- \n";
 		UpdateTrafficLight(name);
 	}
 	
